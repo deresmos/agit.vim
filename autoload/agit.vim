@@ -75,6 +75,15 @@ function! agit#launch(args)
         endif
       endfor
     endif
+    let g:agit_diff_cp932 = 0
+    if exists('g:agit_diff_stat_cp932_pattern')
+      for pattern in g:agit_diff_stat_cp932_pattern
+        if match(git_root, pattern) != -1
+          let g:agit_diff_cp932 = 1
+          break
+        endif
+      endfor
+    endif
     call agit#bufwin#agit_tabnew(git)
     let t:git = git
     if s:fugitive_enabled

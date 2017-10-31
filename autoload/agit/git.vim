@@ -145,6 +145,15 @@ function! s:git.diff(hash) dict
     let ignoresp = g:agit_ignore_spaces ? '-w' : ''
     let diff = agit#git#exec('show -p '. ignoresp .' ' . a:hash, self.git_root)
   endif
+
+  if g:agit_diff_cp932
+    let stat_len = match(diff, 'diff --git')
+    if stat_len != -1
+      let diff = ( (stat_len == 0) ? '' : diff[0:stat_len - 1] ) .
+        \ iconv(diff[stat_len:-1], 'cp932', &enc)
+    endif
+  endif
+
   return diff
 endfunction
 
