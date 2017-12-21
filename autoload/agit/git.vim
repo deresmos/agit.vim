@@ -99,7 +99,7 @@ function! s:git._localchanges(cached, filepath) dict
   endif
   let ret = {'line' : 0}
   let file_count = agit#git#exec('show --name-status --oneline --pretty=format: | wc -l', self.git_root)
-  if file_count > s:max_files
+  if str2nr(file_count) > s:max_files
     let ret.stat = agit#git#exec('show --name-status --oneline --pretty=format:', self.git_root)
   else
     let ret.stat = agit#git#exec('diff --stat=' . g:agit_stat_width . opts, self.git_root)
@@ -137,7 +137,7 @@ function! s:git.stat(hash) dict
     let ignoresp = g:agit_ignore_spaces ? '-w' : ''
 
     let file_count = agit#git#exec('show --name-status --oneline --pretty=format: ' . a:hash . ' | wc -l', self.git_root)
-    if file_count > s:max_files
+    if str2nr(file_count) > s:max_files
       let stat = agit#git#exec('show --name-status --oneline --pretty=format: ' . ignoresp . ' ' . a:hash, self.git_root)
     else
       let stat = agit#git#exec('show --oneline --stat=' . g:agit_stat_width . ' --date=iso --pretty=format: ' . ignoresp . ' ' . a:hash, self.git_root)
