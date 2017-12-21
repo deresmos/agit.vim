@@ -98,9 +98,9 @@ function! s:git._localchanges(cached, filepath) dict
     let opts .= ' -- "' . a:filepath . '"'
   endif
   let ret = {'line' : 0}
-  let file_count = agit#git#exec('show --name-status --oneline --pretty=format: | wc -l', self.git_root)
+  let file_count = agit#git#exec('diff --name-status' . opts . ' | wc -l', self.git_root)
   if str2nr(file_count) > s:max_files
-    let ret.stat = agit#git#exec('show --name-status --oneline --pretty=format:', self.git_root)
+    let ret.stat = agit#git#exec('diff --name-status' . opts, self.git_root)
   else
     let ret.stat = agit#git#exec('diff --stat=' . g:agit_stat_width . opts, self.git_root)
   endif
