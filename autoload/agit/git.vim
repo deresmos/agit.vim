@@ -3,7 +3,7 @@ let s:String = agit#vital().String
 let s:List = agit#vital().List
 let s:Process = agit#vital().Process
 let s:max_files = get(g:, 'agit_max_files', 50)
-let s:max_diff_lines = get(g:, 'agit_max_diff_lines', 1000)
+let s:max_diff_bytes = get(g:, 'agit_max_diff_bytes', 100000)
 
 let s:sep = '__SEP__'
 
@@ -157,7 +157,7 @@ function! s:git.diff(hash, ...) dict
   else
     let ignoresp = g:agit_ignore_spaces ? '-w' : ''
     let relpath = get(a:, 1, '')
-    let diff = agit#git#exec('show -p '. ignoresp .' ' . a:hash . ' ' . relpath . ' | head -n ' . s:max_diff_lines, self.git_root)
+    let diff = agit#git#exec('show -p '. ignoresp .' ' . a:hash . ' ' . relpath . ' | head -c ' . s:max_diff_bytes, self.git_root)
   endif
 
   if g:agit_diff_cp932
